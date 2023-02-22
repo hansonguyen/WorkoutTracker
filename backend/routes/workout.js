@@ -21,7 +21,7 @@ router.get('/:id', getWorkout)
 router.post('/', createWorkout)
 
 // POST exercise to workout
-router.post('/:workoutid/:exerciseid', addExercise)
+router.post('/:workoutid', addExercise)
 
 // DELETE a workout
 router.delete('/:id', deleteWorkout)

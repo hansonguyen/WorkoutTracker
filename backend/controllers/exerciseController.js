@@ -13,28 +13,25 @@ const getExercise = async (req, res) => {
 
     // Check for valid id
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'No such exercise' })
+        return res.status(404).json({ error: 'Exercise does not exist...' })
     }
 
     const exercise = await Exercise.findById(id)
 
     if (!exercise) {
-        return res.status(404).json({ error: 'No such exercise' })
+        return res.status(404).json({ error: 'Exercise does not exist...' })
     }
     res.status(200).json(exercise)
 }
 
 // POST exercise to database
 const createExercise = async (req, res) => {
-    const { title, image, bodyPartsWorked, sets, reps, load } = req.body
+    const { name, description, muscleGroups } = req.body
     try {
         const exercise = await Exercise.create({
-            title,
-            image,
-            bodyPartsWorked,
-            sets,
-            reps,
-            load
+            name,
+            description,
+            muscleGroups
         })
         res.status(200).json(exercise)
     } catch (error) {
@@ -48,13 +45,13 @@ const deleteExercise = async (req, res) => {
 
     // Check for valid id
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'No such exercise' })
+        return res.status(404).json({ error: 'Exercise does not exist...' })
     }
 
     const exercise = await Exercise.findOneAndDelete({ _id: id })
 
     if (!exercise) {
-        return res.status(404).json({ error: 'No such exercise' })
+        return res.status(404).json({ error: 'Exercise does not exist...' })
     }
     res.status(200).json(exercise)
 }
@@ -65,7 +62,7 @@ const updateExercise = async (req, res) => {
 
     // Check for valid id
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'No such exercise' })
+        return res.status(404).json({ error: 'Exercise does not exist...' })
     }
 
     const exercise = await Exercise.findByIdAndUpdate(
@@ -74,7 +71,7 @@ const updateExercise = async (req, res) => {
     )
 
     if (!exercise) {
-        return res.status(404).json({ error: 'No such exercise' })
+        return res.status(404).json({ error: 'Exercise does not exist...' })
     }
     res.status(200).json(exercise)
 }

@@ -8,10 +8,35 @@ const workoutSchema = new Schema(
             type: String,
             required: true
         },
-        exercises: {
-            type: Array,
-            required: true
-        }
+        description: {
+            type: String
+        },
+        exercises: [
+            {
+                exercise_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Exercise',
+                    required: true
+                },
+                sets: {
+                    type: Number,
+                    required: true
+                },
+                reps: {
+                    type: Number,
+                    required: true
+                },
+                load: {
+                    type: Number,
+                    required: true
+                }
+            }
+        ],
+        // user_id: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'User',
+        //     required: true
+        // }
     },
     { timestamps: true }
 )

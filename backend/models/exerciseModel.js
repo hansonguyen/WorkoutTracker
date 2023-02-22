@@ -4,29 +4,22 @@ const Schema = mongoose.Schema
 
 const exerciseSchema = new Schema(
     {
-        title: {
+        name: {
             type: String,
             required: true
         },
-        image: {
+        description: {
             type: String
         },
-        bodyPartsWorked: {
+        muscleGroups: {
             type: Array,
             required: true
         },
-        sets: {
-            type: Number,
-            required: true
-        },
-        reps: {
-            type: Number,
-            required: true
-        },
-        load: {
-            type: Number,
-            required: true
-        }
+        // user_id: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'User',
+        //     required: true
+        // }
     },
     { timestamps: true }
 )
