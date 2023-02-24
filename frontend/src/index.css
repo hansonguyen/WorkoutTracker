@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#app,
+#app > div {
+    height: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    font-family: Inter;
+}
+
+:root {
+    --primary: #094067;
+    --secondary: #3da9fc;
+    --headerFontSize: clamp(3rem, 6vw, 4rem);
+}
+
+/* Home Page */
+
+.home-page {
+    height: 100vh;
+    width: 100vw;
+    background-color: #efefef;
+    text-align: center;
+}
+
+.home-title {
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: clamp(4rem, 8vw, 6rem);
+    color: var(--primary);
+    text-align: center;
+    padding-top: 10%;
+    letter-spacing: 5%;
+}
+
+.home-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.home-description {
+    font-size: clamp(1rem, 3vw, 2rem);
+    font-weight: 400;
+    max-width: 35%;
+    text-align: center;
+}
+
+a {
+    text-align: center;
+}
+
+.home-button {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    background-color: var(--secondary);
+    border-radius: 50px;
+    border: var(--primary);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: min(250px, 30%);
+    height: 12%;
+    min-height: 100px;
+    max-height: 120px;
+}
+
+.home-button:hover {
+    cursor: pointer;
+    box-shadow: 0px;
+}
+
+/* Workouts Page */
+
+.workouts-page {
+    height: 100vh;
+    width: 100vw;
+    background-color: #efefef;
+}
+
+.workouts-title {
+    padding: max(1rem, 2%);
+    font-family: Montserrat;
+    font-size: var(--headerFontSize);
+    color: var(--primary);
+}
+
+.workouts-display {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 2rem;
+}
+
+/* Workout Card */
+
+.workout-card {
+    border: 1px solid var(--secondary);
+    border-radius: 25px;
+    width: min(200px, 40%);
+    height: 9rem;
+    text-align: center;
+    background-color: rgba(61,169,252,.5);
+    flex-grow: 2;
+}
+
+.workout-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.workout-name {
+    font-size: clamp(1.5rem, 1vw, 2rem);
+    font-weight: 700;
+    padding: 4%;
+}
+
+.workout-description, .workout-time {
+    opacity: 50%;
+    font-size: clamp(0.9rem, 1vw, 1rem);
+}
