@@ -1,18 +1,20 @@
-import { IconButton } from '@mui/material'
-import { MoreVert } from '@mui/icons-material'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import Settings from './Settings'
 
 const WorkoutCard = ({ workout }) => {
     return (
         <div className="workout-card">
             <div className="workout-header">
                 <h4 className="workout-name">{workout.name}</h4>
-                <IconButton aria-label='settings'>
-                    <MoreVert />
-                </IconButton>
+                <Settings workoutid={workout._id} />
             </div>
             <p className="workout-description">{workout.description}</p>
-            <p className="workout-time">{formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}</p>
+            <p className="workout-time">
+                Created{' '}
+                {formatDistanceToNow(new Date(workout.createdAt), {
+                    addSuffix: true
+                })}
+            </p>
         </div>
     )
 }

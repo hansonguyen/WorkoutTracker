@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
 import WorkoutCard from '../components/WorkoutCard'
+import NewWorkoutForm from '../components/NewWorkoutForm'
+import { URL } from '../App'
 
 const Workouts = () => {
-    const [workouts, setWorkouts] = useState(null)
+    const { workouts, dispatch } = useWorkoutsContext()
 
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch('http://localhost:4000/api/workout')
+            const response = await fetch(`${URL}/api/workout`)
             const json = await response.json()
 
             if (response.ok) {
-                setWorkouts(json)
+                dispatch({ type: 'SET_WORKOUTS', payload: json })
             }
         }
         fetchWorkouts()
@@ -19,12 +22,15 @@ const Workouts = () => {
     return (
         <div className="workouts-page">
             <h1 className="workouts-title">Workouts</h1>
-            <section className="workouts-display">
-                {workouts &&
-                    workouts.map((workout) => (
-                        <WorkoutCard workout={workout} />
-                    ))}
-            </section>
+            <div className="grid-container">
+                <section className="workouts-display">
+                    {workouts &&
+                        workouts.map((workout) => (
+                            <WorkoutCard key={workout._id} workout={workout} />
+                        ))}
+                </section>
+                <NewWorkoutForm />
+            </div>
         </div>
     )
 }
