@@ -5,7 +5,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material'
 import { MoreVert, Edit, Delete } from '@mui/icons-material'
 import { URL } from '../App'
 
-const Settings = ({ workoutid }) => {
+const WorkoutSettings = ({ workoutid }) => {
     const { dispatch } = useWorkoutsContext()
     const navigate = useNavigate()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -57,4 +57,4 @@ const Settings = ({ workoutid }) => {
     )
 }
 
-export default Settings
+export default WorkoutSettings

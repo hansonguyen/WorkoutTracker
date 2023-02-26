@@ -160,6 +160,12 @@ a {
     padding: 2rem;
 }
 
+.exercise-list-display {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 /* Exercise Card */
 
 .exercise-card {
@@ -167,7 +173,8 @@ a {
     text-align: center;
     border-radius: 10px;
     box-shadow: 0px 7px 30px -10px rgba(0, 0, 0, 0.25);
-    width: min(200px, 40%);
+    min-width: 200px;
+    max-width: 500px;
     height: 12rem;
     text-align: center;
     flex-grow: 2;

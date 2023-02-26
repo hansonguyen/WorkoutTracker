@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
 import ExerciseCard from '../components/ExerciseCard'
+import ExerciseList from '../components/ExerciseList'
 import { URL } from '../App'
 
 const EditWorkout = () => {
@@ -55,9 +56,7 @@ const EditWorkout = () => {
                 <section className='exercises-display'>
                     {exerciseCards}
                 </section>
-                <section className='my-exercises'>
-                    
-                </section>
+                <ExerciseList workout={workout}/>
             </div>
         </div>
     )
