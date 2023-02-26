@@ -3,12 +3,14 @@ import { useParams } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
 import ExerciseCard from '../components/ExerciseCard'
 import ExerciseList from '../components/ExerciseList'
+import NewExerciseModal from '../components/NewExerciseModal'
 import { URL } from '../App'
 
 const EditWorkout = () => {
     const { id } = useParams()
     const [workout, setWorkout] = useState(null)
     const [exerciseCards, setExerciseCards] = useState([])
+    const [modalOpen, setModalOpen] = useState(false)
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -45,6 +47,14 @@ const EditWorkout = () => {
         fetchWorkouts()
     }, [])
 
+    const handleNewExerciseClick = () => {
+        setModalOpen(true)
+    }
+
+    const handleClose = () => {
+        setModalOpen(false)
+    }
+
     return (
         <div className="edit-page">
             {workout ? (
@@ -58,6 +68,8 @@ const EditWorkout = () => {
                 </section>
                 <ExerciseList workout={workout}/>
             </div>
+            <button onClick={handleNewExerciseClick}>New Exercise</button>
+            <NewExerciseModal open={modalOpen} onClose={handleClose} />
         </div>
     )
 }
