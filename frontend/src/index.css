@@ -20,6 +20,7 @@ body {
 :root {
     --primary: #094067;
     --secondary: #3da9fc;
+    --error: #e7195a;
     --headerFontSize: clamp(3rem, 6vw, 4rem);
 }
 
@@ -102,7 +103,6 @@ a {
     grid-template-columns: 3fr 1fr;
     grid-gap: 1rem;
 }
-  
 
 .workouts-display {
     display: flex;
@@ -121,7 +121,7 @@ a {
     width: min(200px, 40%);
     height: 9rem;
     text-align: center;
-    background-color: rgba(61,169,252,.5);
+    background-color: rgba(61, 169, 252, 0.5);
 }
 
 .workout-header {
@@ -135,7 +135,8 @@ a {
     padding: 4%;
 }
 
-.workout-description, .workout-time {
+.workout-description,
+.workout-time {
     opacity: 50%;
     font-size: clamp(0.9rem, 1vw, 1rem);
 }
@@ -148,10 +149,16 @@ a {
 }
 
 /* New Workout Form */
-
-
+/* TODO */
 
 /* Edit Page */
+
+.edit-title {
+    padding: max(1rem, 2%);
+    font-family: Montserrat;
+    font-size: var(--headerFontSize);
+    color: var(--primary);
+}
 
 .exercises-display {
     display: flex;
@@ -164,6 +171,18 @@ a {
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+
+.create-exercise-button {
+    margin: 0 auto;
+    background: var(--secondary);
+    border: 0;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: Inter;
+    font-weight: 700;
 }
 
 /* Exercise Card */
@@ -204,7 +223,7 @@ a {
 }
 
 /* New Exercise Modal */
-/* TODO */
+
 .new-exercise-modal {
     position: absolute;
     top: 50%;
@@ -212,6 +231,74 @@ a {
     transform: translate(-50%, -50%);
     width: 400px;
     background-color: white;
-    border: 2px solid #000;
+    border: 1px solid #000;
     box-shadow: 24px;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.new-exercise-header {
+    display: flex;
+    font-size: 2rem;
+    padding-bottom: 1rem;
+}
+
+.new-exercise-label, .new-exercise-input, .new-exercise-submit, .new-exercise-close {
+    display: block;
+}
+
+.new-exercise-input {
+    padding: 10px;
+    margin: 10px auto 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.new-exercise-muscles {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.new-exercise-checkbox {
+    font-family: Inter;
+}
+
+.new-exercise-submit {
+    margin: 0 auto;
+    background: var(--secondary);
+    border: 0;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: Inter;
+    font-weight: 700;
+}
+
+.new-exercise-close {
+    margin-left: auto;
+    width: 100%;
+    opacity: 50%;
+    cursor: pointer;
+}
+
+/* Error Message */
+
+.error {
+    padding: 10px;
+    background: #ffefef;
+    border: 1px solid var(--error);
+    color: var(--error);
+    border-radius: 4px;
+    margin: 20px 0;
+  }
+
+.input-error {
+    border: 1px solid var(--error);
 }

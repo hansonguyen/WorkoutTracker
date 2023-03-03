@@ -27,6 +27,25 @@ const getExercise = async (req, res) => {
 // POST exercise to database
 const createExercise = async (req, res) => {
     const { name, description, muscleGroups } = req.body
+
+    let emptyFields = []
+
+    if (!name) {
+        emptyFields.push('name')
+    }
+    if (!description) {
+        emptyFields.push('description')
+    }
+    if (muscleGroups.length == 0) {
+        emptyFields.push('muscleGroups')
+    }
+
+    if (emptyFields.length > 0) {
+        return res
+            .status(400)
+            .json({ error: 'Please fill in required fields', emptyFields })
+    }
+
     try {
         const exercise = await Exercise.create({
             name,
@@ -35,7 +54,7 @@ const createExercise = async (req, res) => {
         })
         res.status(200).json(exercise)
     } catch (error) {
-        res.status(400).json(error)
+        res.status(400).json({ error: error.message })
     }
 }
 

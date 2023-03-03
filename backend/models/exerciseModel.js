@@ -9,12 +9,16 @@ const exerciseSchema = new Schema(
             required: true
         },
         description: {
-            type: String
-        },
-        muscleGroups: {
-            type: Array,
+            type: String,
             required: true
         },
+        muscleGroups: {
+            type: [String],
+            required: true,
+            validate: {
+                validator: (arr) => arr.length > 0
+            }
+        }
         // user_id: {
         //     type: mongoose.Schema.Types.ObjectId,
         //     ref: 'User',
