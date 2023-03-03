@@ -7,6 +7,7 @@ const NewWorkoutForm = () => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -23,36 +24,46 @@ const NewWorkoutForm = () => {
 
         if (!response.ok) {
             setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
+            setEmptyFields([])
+            setError(null)
             setName('')
             setDescription('')
-            setError(null)
             dispatch({ type: 'CREATE_WORKOUT', payload: json })
         }
     }
 
     return (
         <form className="workout-form" onSubmit={handleSubmit}>
-            <h3>New Workout</h3>
-            <label>Name:</label>
+            <h3 className="workout-form-title">New Workout</h3>
+            <label className="workout-form-label">Name:</label>
             <input
+                className={`workout-form-input ${
+                    emptyFields.includes('name') ? 'input-error' : ''
+                }`}
                 type="text"
                 onChange={(e) => {
                     setName(e.target.value)
                 }}
                 value={name}
             />
-            <label>Description:</label>
+            <label className="workout-form-label">Description:</label>
             <input
+                className={`workout-form-input ${
+                    emptyFields.includes('description') ? 'input-error' : ''
+                }`}
                 type="text"
                 onChange={(e) => {
                     setDescription(e.target.value)
                 }}
                 value={description}
             />
-            <button>Add</button>
-            {error && <div>{error}</div>}
+            <button className="workout-form-submit" type="submit">
+                Add
+            </button>
+            {error && <div className="error">{error}</div>}
         </form>
     )
 }

@@ -123,8 +123,7 @@ const EditWorkout = () => {
             <div className="grid-container">
                 <section className="exercises-display">{exerciseCards}</section>
                 <ExerciseList workout={workout} />
-                <button className="edit-back-button"
-                onClick={handleBackClick}>
+                <button className="edit-back-button" onClick={handleBackClick}>
                     Back to Workouts
                 </button>
                 <button
