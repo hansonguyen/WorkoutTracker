@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
 import ExerciseCard from '../components/ExerciseCard'
 import ExerciseList from '../components/ExerciseList'
@@ -9,6 +9,7 @@ import { Edit } from '@mui/icons-material'
 
 const EditWorkout = () => {
     const { id } = useParams()
+    const navigate = useNavigate()
     const [workout, setWorkout] = useState(null)
     const [exerciseCards, setExerciseCards] = useState([])
     const [modalOpen, setModalOpen] = useState(false)
@@ -55,11 +56,12 @@ const EditWorkout = () => {
 
     // TODO
     const handleDescriptionBlur = async () => {
-        if (workout.description !== description) {
+        if (workout.description !== description.trim()) {
             const response = await fetch(`${URL}/api/workout/${id}`, {
                 method: 'PATCH',
-                body: {
-                    description: description
+                body: JSON.stringify({ description: description.trim() }),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
             })
             const json = await response.json()
@@ -67,10 +69,14 @@ const EditWorkout = () => {
                 setWorkout(json)
                 setDescription(json.description)
                 console.log(description)
-                console.log(json)
+                console.log(workout)
             }
         }
         setIsEdit(false)
+    }
+
+    const handleBackClick = () => {
+        navigate('/workouts')
     }
 
     const handleNewExerciseClick = () => {
@@ -84,11 +90,17 @@ const EditWorkout = () => {
     const Header = () => {
         return (
             <div className="edit-header">
-                <h1 className="edit-title">{workout.name}</h1>
+                <div className="edit-title-container">
+                    <h1 className="edit-title">{workout.name}</h1>
+                </div>
                 {!isEdit ? (
                     <p className="edit-description">
                         {workout.description}
-                        <Edit onClick={handleEditClick} fontSize="small" />
+                        <Edit
+                            className="edit-description-icon"
+                            onClick={handleEditClick}
+                            fontSize="small"
+                        />
                     </p>
                 ) : (
                     <input
@@ -111,7 +123,10 @@ const EditWorkout = () => {
             <div className="grid-container">
                 <section className="exercises-display">{exerciseCards}</section>
                 <ExerciseList workout={workout} />
-                <div></div>
+                <button className="edit-back-button"
+                onClick={handleBackClick}>
+                    Back to Workouts
+                </button>
                 <button
                     className="create-exercise-button"
                     onClick={handleNewExerciseClick}

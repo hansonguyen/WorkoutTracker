@@ -36,7 +36,7 @@ const createWorkout = async (req, res) => {
         })
         res.status(200).json(workout)
     } catch (error) {
-        res.status(400).json({error: error.message})
+        res.status(400).json({ error: error.message })
     }
 }
 
@@ -63,10 +63,10 @@ const removeExercise = async (req, res) => {
     // Validatation
     if (!mongoose.Types.ObjectId.isValid(workoutid)) {
         return res.status(404).json({ error: 'Workout is not valid...' })
-    } 
+    }
     if (!mongoose.Types.ObjectId.isValid(exerciseid)) {
         return res.status(404).json({ error: 'Exercise is not valid...' })
-    } 
+    }
     const exercise = await Exercise.findById(exerciseid)
     if (!exercise) {
         return res.status(404).json({ error: 'Exercise does not exist...' })
@@ -97,7 +97,11 @@ const updateWorkout = async (req, res) => {
         return res.status(404).json({ error: 'Exercise does not exist...' })
     }
 
-    const workout = await Workout.findOneAndUpdate({ _id: id }, { ...req.body })
+    const workout = await Workout.findOneAndUpdate(
+        { _id: id },
+        { ...req.body },
+        { returnOriginal: false }
+    )
 
     if (!workout) {
         return res.status(404).json({ error: 'Exercise does not exist...' })
@@ -113,22 +117,28 @@ const addExercise = async (req, res) => {
     // Validatation
     if (!mongoose.Types.ObjectId.isValid(workoutid)) {
         return res.status(404).json({ error: 'Workout is not valid...' })
-    } 
+    }
     if (!mongoose.Types.ObjectId.isValid(exercise_id)) {
         return res.status(404).json({ error: 'Exercise is not valid...' })
-    } 
+    }
     const exercise = await Exercise.findById(exercise_id)
     if (!exercise) {
         return res.status(404).json({ error: 'Exercise does not exist...' })
     }
     if (!Number.isInteger(sets) || sets <= 0) {
-        return res.status(400).json({error: 'Sets must be a positive integer greater than 0'})
+        return res
+            .status(400)
+            .json({ error: 'Sets must be a positive integer greater than 0' })
     }
     if (!Number.isInteger(reps) || reps <= 0) {
-        return res.status(400).json({error: 'Reps must be a positive integer greater than 0'})
+        return res
+            .status(400)
+            .json({ error: 'Reps must be a positive integer greater than 0' })
     }
     if (!Number.isInteger(load) || load < 0) {
-        return res.status(400).json({error: 'Load must be a positive integer'})
+        return res
+            .status(400)
+            .json({ error: 'Load must be a positive integer' })
     }
 
     try {

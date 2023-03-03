@@ -17,8 +17,7 @@ const ExerciseList = ({ workout }) => {
                         (workoutExercise) => workoutExercise.exercise_id
                     )
                     filteredExercises = json.filter(
-                        (exercise) =>
-                            !exerciseIds.includes(exercise._id)
+                        (exercise) => !exerciseIds.includes(exercise._id)
                     )
                 }
                 setExercises(filteredExercises)
@@ -33,12 +32,9 @@ const ExerciseList = ({ workout }) => {
 
     return (
         <section className="exercise-list-display">
-            <h1>My Exercises</h1>
+            <h1 className="exercise-list-title">My Exercises</h1>
             {exercises.map((exercise) => (
-                <ExerciseCard 
-                    key={exercise._id}
-                    exercise={exercise}
-                />
+                <ExerciseCard key={exercise._id} exercise={exercise} />
             ))}
         </section>
     )

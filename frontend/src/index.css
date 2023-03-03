@@ -160,6 +160,18 @@ a {
     color: var(--primary);
 }
 
+.edit-description {
+    font-family: Inter;
+    margin-left: max(5%, 2rem);
+    padding-right: 1rem;
+    width: 50%;
+    height: 3rem;
+}
+
+.edit-description-icon {
+    margin-left: 10px;
+}
+
 .exercises-display {
     display: flex;
     gap: 1rem;
@@ -168,12 +180,21 @@ a {
 }
 
 .exercise-list-display {
+    border-left: solid;
+    height: 750px;
     display: flex;
     flex-direction: column;
     text-align: center;
+    overflow: auto;
+    padding: 0 3rem;
 }
 
-.create-exercise-button {
+.exercise-list-title {
+    padding-bottom: 1rem;
+}
+
+.edit-back-button, .create-exercise-button {
+    position: relative;
     margin: 0 auto;
     background: var(--secondary);
     border: 0;
@@ -195,6 +216,7 @@ a {
     min-width: 200px;
     max-width: 500px;
     height: 12rem;
+    min-height: 200px;
     text-align: center;
     flex-grow: 2;
 }
@@ -207,6 +229,10 @@ a {
 .exercise-middle {
     display: flex;
     justify-content: space-between;
+}
+
+.exercise-description {
+    margin-left: 1rem;
 }
 
 .exercise-name {
