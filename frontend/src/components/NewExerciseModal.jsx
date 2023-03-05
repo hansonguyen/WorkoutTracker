@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useExercisesContext } from '../hooks/useExercisesContext'
 import { Modal, Checkbox, FormControlLabel } from '@mui/material'
 import { Close, AddCircleOutline, AddCircle } from '@mui/icons-material'
 import { URL } from '../App'
@@ -16,6 +17,7 @@ const muscleGroups = [
 ]
 
 const NewExerciseModal = ({ open, onClose }) => {
+    const { dispatch } = useExercisesContext()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [checkedGroups, setCheckedGroups] = useState([])
@@ -63,6 +65,7 @@ const NewExerciseModal = ({ open, onClose }) => {
             setName('')
             setDescription('')
             setCheckedGroups([])
+            dispatch({ type: 'CREATE_EXERCISE', payload: json })
             onClose()
         }
     }

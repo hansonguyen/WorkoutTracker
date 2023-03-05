@@ -6,7 +6,7 @@ const ExerciseCard = ({ exercise, sets, reps, load }) => {
         <div className="exercise-card">
             <div className="exercise-header">
                 <h4 className="exercise-name">{exercise.name}</h4>
-                <ExerciseSettings />
+                <ExerciseSettings exerciseid={exercise._id} />
             </div>
             <section className="exercise-middle">
                 <p className="exercise-description">{exercise.description}</p>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { CircularProgress } from '@mui/material'
+import { CircularProgress, IconButton } from '@mui/material'
 import ExerciseCard from '../components/ExerciseCard'
 import ExerciseList from '../components/ExerciseList'
 import NewExerciseModal from '../components/NewExerciseModal'
@@ -96,11 +96,9 @@ const EditWorkout = () => {
                 {!isEdit ? (
                     <p className="edit-description">
                         {workout.description}
-                        <Edit
-                            className="edit-description-icon"
-                            onClick={handleEditClick}
-                            fontSize="small"
-                        />
+                        <IconButton onClick={handleEditClick}>
+                            <Edit fontSize="small" />
+                        </IconButton>
                     </p>
                 ) : (
                     <input

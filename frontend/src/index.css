@@ -205,10 +205,6 @@ a {
     height: 3rem;
 }
 
-.edit-description-icon {
-    margin-left: 10px;
-}
-
 .exercises-display {
     display: flex;
     gap: 1rem;

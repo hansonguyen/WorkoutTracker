@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import { useExercisesContext } from '../hooks/useExercisesContext'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import { MoreVert, Edit, Delete, Add, Remove } from '@mui/icons-material'
+import { URL } from '../App'
 
-const ExerciseSettings = () => {
+const ExerciseSettings = ({ exerciseid }) => {
+    const { dispatch } = useExercisesContext()
     const [anchorEl, setAnchorEl] = useState(null)
     const handleMenuClick = (e) => {
         setAnchorEl(e.currentTarget)
@@ -27,8 +30,16 @@ const ExerciseSettings = () => {
         handleMenuClose()
     }
     const handleDeleteClick = async () => {
-        // TODO
-        console.log('delete clicked')
+        console.log(exerciseid)
+        const response = await fetch(`${URL}/api/exercise/${exerciseid}`, {
+            method: 'DELETE'
+        })
+        const json = await response.json()
+
+        if (response.ok) {
+            dispatch({ type: 'DELETE_EXERCISE', payload: json })
+        }
+
         handleMenuClose()
     }
 
