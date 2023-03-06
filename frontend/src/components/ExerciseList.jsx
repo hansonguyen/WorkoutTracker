@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { URL } from '../App'
 import { useExercisesContext } from '../hooks/useExercisesContext'
 import ExerciseCard from './ExerciseCard'
 
 const ExerciseList = ({ workout }) => {
     const { exercises, dispatch } = useExercisesContext()
+    const [usedExercises, setUsedExercises] = useState([])
 
     useEffect(() => {
         const fetchExercises = async () => {
@@ -15,15 +16,32 @@ const ExerciseList = ({ workout }) => {
                 dispatch({ type: 'SET_EXERCISES', payload: json })
             }
         }
+
         fetchExercises()
-    }, [])
+    }, [dispatch])
+
+    useEffect(() => {
+        if (workout) {
+            const usedIDs = workout.exercises.map(
+                (exercise) => exercise.exercise_id
+            )
+            const filteredExercises = exercises.filter(
+                (exercise) => !usedIDs.includes(exercise._id)
+            )
+            setUsedExercises(filteredExercises)
+        }
+    }, [workout, exercises])
 
     return (
         <section className="exercise-list-display">
             <h1 className="exercise-list-title">My Exercises</h1>
-            {exercises &&
-                exercises.map((exercise) => (
-                    <ExerciseCard key={exercise._id} workout={workout} exercise={exercise} />
+            {usedExercises &&
+                usedExercises.map((exercise) => (
+                    <ExerciseCard
+                        key={exercise._id}
+                        workout={workout}
+                        exercise={exercise}
+                    />
                 ))}
         </section>
     )

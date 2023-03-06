@@ -19,6 +19,7 @@ export const workoutsReducer = (state, action) => {
                 )
             }
         case 'UPDATE_WORKOUT':
+            console.log(state.workouts)
             return {
                 workouts: state.workouts.map((workout) => {
                     if (workout._id === action.payload._id) {
@@ -35,7 +36,7 @@ export const workoutsReducer = (state, action) => {
 
 export const WorkoutsContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(workoutsReducer, {
-        workouts: null
+        workouts: []
     })
 
     return (

@@ -49,7 +49,7 @@ const EditWorkout = () => {
             }
         }
         fetchWorkouts()
-    }, [])
+    }, [workout])
 
     const handleEditClick = () => {
         setIsEdit(true)
