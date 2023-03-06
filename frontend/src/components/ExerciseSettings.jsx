@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useExercisesContext } from '../hooks/useExercisesContext'
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import { MoreVert, Edit, Delete, Add, Remove } from '@mui/icons-material'
 import { URL } from '../App'
@@ -7,6 +8,7 @@ import AddExerciseModal from './AddExerciseModal'
 
 const ExerciseSettings = ({ workout, exerciseid }) => {
     const { dispatch } = useExercisesContext()
+    const { dispatch: workoutsDispatch } = useWorkoutsContext()
     const [anchorEl, setAnchorEl] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
 
@@ -33,7 +35,7 @@ const ExerciseSettings = ({ workout, exerciseid }) => {
         const json = await response.json()
 
         if (response.ok) {
-            dispatch({ type: 'UPDATE_WORKOUT', payload: json })
+            workoutsDispatch({ type: 'UPDATE_WORKOUT', payload: json })
             console.log(`Removed ${exerciseid} from ${workout.name}`)
         }
         handleMenuClose()

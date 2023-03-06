@@ -6,9 +6,13 @@ import ExerciseList from '../components/ExerciseList'
 import NewExerciseModal from '../components/NewExerciseModal'
 import { URL } from '../App'
 import { Edit } from '@mui/icons-material'
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useExercisesContext } from '../hooks/useExercisesContext'
 
 const EditWorkout = () => {
     const { id } = useParams()
+    const { dispatch } = useWorkoutsContext()
+    const { exercises } = useExercisesContext()
     const navigate = useNavigate()
     const [workout, setWorkout] = useState(null)
     const [exerciseCards, setExerciseCards] = useState([])
@@ -49,7 +53,7 @@ const EditWorkout = () => {
             }
         }
         fetchWorkouts()
-    }, [workout])
+    }, [dispatch, exercises])
 
     const handleEditClick = () => {
         setIsEdit(true)
@@ -69,8 +73,6 @@ const EditWorkout = () => {
             if (response.ok) {
                 setWorkout(json)
                 setDescription(json.description)
-                console.log(description)
-                console.log(workout)
             }
         }
         setIsEdit(false)

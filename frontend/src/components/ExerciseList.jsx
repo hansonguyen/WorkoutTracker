@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { URL } from '../App'
 import { useExercisesContext } from '../hooks/useExercisesContext'
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
 import ExerciseCard from './ExerciseCard'
 
 const ExerciseList = ({ workout }) => {
     const { exercises, dispatch } = useExercisesContext()
-    const [usedExercises, setUsedExercises] = useState([])
+    const { workouts } = useWorkoutsContext()
+    const [unusedExercises, setUnusedExercises] = useState([])
 
     useEffect(() => {
         const fetchExercises = async () => {
@@ -18,7 +20,7 @@ const ExerciseList = ({ workout }) => {
         }
 
         fetchExercises()
-    }, [dispatch])
+    }, [dispatch, workouts])
 
     useEffect(() => {
         if (workout) {
@@ -28,15 +30,15 @@ const ExerciseList = ({ workout }) => {
             const filteredExercises = exercises.filter(
                 (exercise) => !usedIDs.includes(exercise._id)
             )
-            setUsedExercises(filteredExercises)
+            setUnusedExercises(filteredExercises)
         }
-    }, [workout, exercises])
+    }, [workout, exercises, workouts])
 
     return (
         <section className="exercise-list-display">
             <h1 className="exercise-list-title">My Exercises</h1>
-            {usedExercises &&
-                usedExercises.map((exercise) => (
+            {unusedExercises &&
+                unusedExercises.map((exercise) => (
                     <ExerciseCard
                         key={exercise._id}
                         workout={workout}
