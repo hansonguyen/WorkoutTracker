@@ -19,13 +19,13 @@ const EditWorkout = () => {
     useEffect(() => {
         const fetchWorkouts = async () => {
             const response = await fetch(`${URL}/api/workout/${id}`)
-            const json = await response.json()
+            const workoutJSON = await response.json()
 
             if (response.ok) {
-                setWorkout(json)
-                setDescription(json.description)
+                setWorkout(workoutJSON)
+                setDescription(workoutJSON.description)
                 const cards = await Promise.all(
-                    json.exercises.map(async (exercise) => {
+                    workoutJSON.exercises.map(async (exercise) => {
                         const response = await fetch(
                             `${URL}/api/exercise/${exercise.exercise_id}`
                         )
@@ -34,6 +34,7 @@ const EditWorkout = () => {
                         if (response.ok) {
                             return (
                                 <ExerciseCard
+                                    workout={workoutJSON}
                                     exercise={json}
                                     sets={exercise.sets}
                                     reps={exercise.reps}

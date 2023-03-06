@@ -3,10 +3,13 @@ import { useExercisesContext } from '../hooks/useExercisesContext'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import { MoreVert, Edit, Delete, Add, Remove } from '@mui/icons-material'
 import { URL } from '../App'
+import AddExerciseModal from './AddExerciseModal'
 
-const ExerciseSettings = ({ exerciseid }) => {
+const ExerciseSettings = ({ workout, exerciseid }) => {
     const { dispatch } = useExercisesContext()
     const [anchorEl, setAnchorEl] = useState(null)
+    const [modalOpen, setModalOpen] = useState(false)
+
     const handleMenuClick = (e) => {
         setAnchorEl(e.currentTarget)
     }
@@ -20,17 +23,22 @@ const ExerciseSettings = ({ exerciseid }) => {
         handleMenuClose()
     }
     const handleAddClick = () => {
-        // TODO
-        console.log('add clicked')
+        setModalOpen(true)
         handleMenuClose()
     }
-    const handleRemoveClick = () => {
-        // TODO
-        console.log('remove clicked')
+    const handleRemoveClick = async () => {
+        const response = await fetch(`${URL}/api/workout/${workout._id}/${exerciseid}`, {
+            method: 'DELETE'
+        })
+        const json = await response.json()
+
+        if (response.ok) {
+            dispatch({ type: 'UPDATE_WORKOUT', payload: json })
+            console.log(`Removed ${exerciseid} from ${workout.name}`)
+        }
         handleMenuClose()
     }
     const handleDeleteClick = async () => {
-        console.log(exerciseid)
         const response = await fetch(`${URL}/api/exercise/${exerciseid}`, {
             method: 'DELETE'
         })
@@ -41,6 +49,10 @@ const ExerciseSettings = ({ exerciseid }) => {
         }
 
         handleMenuClose()
+    }
+
+    const handleClose = () => {
+        setModalOpen(false)
     }
 
     return (
@@ -71,6 +83,7 @@ const ExerciseSettings = ({ exerciseid }) => {
                     Delete
                 </MenuItem>
             </Menu>
+            <AddExerciseModal open={modalOpen} onClose={handleClose} workout={workout} exerciseid={exerciseid} />
         </div>
     )
 }

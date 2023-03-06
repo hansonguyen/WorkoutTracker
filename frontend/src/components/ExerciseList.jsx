@@ -23,8 +23,8 @@ const ExerciseList = ({ workout }) => {
             <h1 className="exercise-list-title">My Exercises</h1>
             {exercises &&
                 exercises.map((exercise) => (
-                    <ExerciseCard key={exercise._id} exercise={exercise} />
-            ))}
+                    <ExerciseCard key={exercise._id} workout={workout} exercise={exercise} />
+                ))}
         </section>
     )
 }

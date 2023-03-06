@@ -45,13 +45,13 @@ const NewExerciseModal = ({ open, onClose }) => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         // Handle form submission
-        const exercise = {name, description, muscleGroups: checkedGroups}
+        const exercise = { name, description, muscleGroups: checkedGroups }
         const response = await fetch(`${URL}/api/exercise`, {
             method: 'POST',
             body: JSON.stringify(exercise),
             headers: {
                 'Content-Type': 'application/json'
-                }
+            }
         })
         const json = await response.json()
 
@@ -86,14 +86,20 @@ const NewExerciseModal = ({ open, onClose }) => {
                 <form onSubmit={handleSubmit}>
                     <label className="new-exercise-label">Name</label>
                     <input
-                        className={`new-exercise-input ${emptyFields.includes('name') ? 'input-error' : ''}`}
+                        className={`new-exercise-input ${
+                            emptyFields.includes('name') ? 'input-error' : ''
+                        }`}
                         label="Name"
                         value={name}
                         onChange={handleNameChange}
                     />
                     <label className="new-exercise-label">Description</label>
                     <input
-                        className={`new-exercise-input ${emptyFields.includes('description') ? 'input-error' : ''}`}
+                        className={`new-exercise-input ${
+                            emptyFields.includes('description')
+                                ? 'input-error'
+                                : ''
+                        }`}
                         label="Description"
                         value={description}
                         onChange={handleDescriptionChange}
@@ -107,7 +113,17 @@ const NewExerciseModal = ({ open, onClose }) => {
                                     <Checkbox
                                         value={group}
                                         checked={checkedGroups.includes(group)}
-                                        icon={<AddCircleOutline color={`${emptyFields.includes('muscleGroups') ? 'error' : ''}`}/>}
+                                        icon={
+                                            <AddCircleOutline
+                                                color={`${
+                                                    emptyFields.includes(
+                                                        'muscleGroups'
+                                                    )
+                                                        ? 'error'
+                                                        : ''
+                                                }`}
+                                            />
+                                        }
                                         checkedIcon={<AddCircle />}
                                         onChange={handleGroupChange}
                                     />
@@ -119,7 +135,7 @@ const NewExerciseModal = ({ open, onClose }) => {
                     <button className="new-exercise-submit" type="submit">
                         Create
                     </button>
-                    {error && <div className='error'>{error}</div>}
+                    {error && <div className="error">{error}</div>}
                 </form>
             </div>
         </Modal>
