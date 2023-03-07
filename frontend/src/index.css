@@ -100,7 +100,7 @@ a {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-gap: 1rem;
 }
 
@@ -190,17 +190,23 @@ a {
 
 /* Edit Page */
 
+.edit-page {
+    overflow-y: auto;
+}
+
 .edit-title {
+    margin: 5px;
     padding: max(1rem, 2%);
     font-family: Montserrat;
     font-size: var(--headerFontSize);
+    font-weight: 700;
     color: var(--primary);
+    width: 50%;
 }
 
 .edit-description {
     font-family: Inter;
     margin-left: max(5%, 2rem);
-    padding-right: 1rem;
     width: 50%;
     height: 3rem;
 }
@@ -208,7 +214,6 @@ a {
 .exercises-display {
     display: flex;
     gap: 1rem;
-    justify-content: space-between;
     flex-wrap: wrap;
     padding: 2rem;
 }
@@ -218,9 +223,12 @@ a {
     height: 750px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     text-align: center;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 0 3rem;
+    min-width: 250px;
 }
 
 .exercise-list-title {
@@ -248,12 +256,10 @@ a {
     text-align: center;
     border-radius: 10px;
     box-shadow: 0px 7px 30px -10px rgba(0, 0, 0, 0.25);
-    min-width: 200px;
-    max-width: 400px;
+    width: clamp(200px, 25vw, 350px);
     height: 12rem;
     min-height: 200px;
     text-align: center;
-    flex-grow: 2;
 }
 
 .exercise-header {
@@ -263,11 +269,13 @@ a {
 
 .exercise-middle {
     display: flex;
+    flex-direction: column;
+    padding: 5px;
     justify-content: space-between;
 }
 
 .exercise-description {
-    margin-left: 1rem;
+    margin-left: 0.75rem;
 }
 
 .exercise-name {
@@ -305,6 +313,7 @@ a {
     padding-bottom: 1rem;
 }
 
+.add-exercise-label,
 .new-exercise-label,
 .new-exercise-input,
 .new-exercise-submit,
@@ -350,6 +359,17 @@ a {
     width: 100%;
     opacity: 50%;
     cursor: pointer;
+}
+
+/* Add Exercise Modal */
+
+.add-exercise-label {
+    display: flex;
+    align-items: center;
+}
+
+.add-exercise-info {
+    margin-left: 5px;
 }
 
 /* Error Message */

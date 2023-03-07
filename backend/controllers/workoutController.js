@@ -126,6 +126,7 @@ const updateWorkout = async (req, res) => {
 const addExercise = async (req, res) => {
     const { workoutid } = req.params
     const { exercise_id, sets, reps, load } = req.body
+    let emptyFields = []
 
     // Validatation
     if (!mongoose.Types.ObjectId.isValid(workoutid)) {
@@ -139,19 +140,16 @@ const addExercise = async (req, res) => {
         return res.status(404).json({ error: 'Exercise does not exist...' })
     }
     if (!Number.isInteger(sets) || sets <= 0) {
-        return res
-            .status(400)
-            .json({ error: 'Sets must be a positive integer greater than 0' })
+        emptyFields.push('sets')
     }
     if (!Number.isInteger(reps) || reps <= 0) {
-        return res
-            .status(400)
-            .json({ error: 'Reps must be a positive integer greater than 0' })
+        emptyFields.push('reps')
     }
     if (!Number.isInteger(load) || load < 0) {
-        return res
-            .status(400)
-            .json({ error: 'Load must be a positive integer' })
+        emptyFields.push('load')
+    }
+    if (emptyFields.length > 0) {
+        return res.status(400).json({error: 'Please fill out all fields properly', emptyFields})
     }
 
     try {

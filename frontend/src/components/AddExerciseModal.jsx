@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
-import { Modal, Checkbox, FormControlLabel } from '@mui/material'
-import { Close, AddCircleOutline, AddCircle } from '@mui/icons-material'
+import { Modal, Tooltip } from '@mui/material'
+import { Close, Info } from '@mui/icons-material'
 import { URL } from '../App'
 
 const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
@@ -56,10 +56,12 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
 
         if (!response.ok) {
             setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
             dispatch({ type: 'UPDATE_WORKOUT', payload: json })
             setError(null)
+            setEmptyFields([])
             setSets(1)
             setReps(1)
             setLoad(0)
@@ -82,28 +84,58 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    <label className="new-exercise-label">Sets</label>
+                    <label className="add-exercise-label">
+                        Sets
+                        <Tooltip
+                            title="Sets must be greater than 0"
+                            placement="top"
+                            >
+                            <Info className='add-exercise-info' fontSize="small" />
+                        </Tooltip>
+                    </label>
                     <input
+                        className={`new-exercise-input ${
+                            emptyFields.includes('sets') ? 'input-error' : ''
+                        }`}
                         label="Sets"
                         value={sets}
                         type="number"
-                        min="1"
                         onChange={handleSetsChange}
                     />
-                    <label className="new-exercise-label">Reps</label>
+                    <label className="add-exercise-label">
+                        Reps
+                        <Tooltip
+                            title="Reps must be greater than 0"
+                            placement="top"
+                            >
+                            <Info className='add-exercise-info' fontSize="small" />
+                        </Tooltip>
+                    </label>
                     <input
+                        className={`new-exercise-input ${
+                            emptyFields.includes('reps') ? 'input-error' : ''
+                        }`}
                         label="reps"
                         value={reps}
                         type="number"
-                        min="1"
                         onChange={handleRepsChange}
                     />
-                    <label className="new-exercise-label">Load</label>
+                    <label className="add-exercise-label">
+                        Load
+                        <Tooltip
+                            title="Load must be at least 0"
+                            placement="top"
+                            >
+                            <Info className='add-exercise-info' fontSize="small" />
+                        </Tooltip>
+                    </label>
                     <input
+                        className={`new-exercise-input ${
+                            emptyFields.includes('load') ? 'input-error' : ''
+                        }`}
                         label="load"
                         value={load}
                         type="number"
-                        min="0"
                         onChange={handleLoadChange}
                     />
                     <button className="new-exercise-submit" type="submit">

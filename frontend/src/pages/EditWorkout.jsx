@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { CircularProgress, IconButton } from '@mui/material'
+import { CircularProgress, IconButton, Tooltip } from '@mui/material'
 import ExerciseCard from '../components/ExerciseCard'
 import ExerciseList from '../components/ExerciseList'
 import NewExerciseModal from '../components/NewExerciseModal'
@@ -17,8 +17,10 @@ const EditWorkout = () => {
     const [workout, setWorkout] = useState(null)
     const [exerciseCards, setExerciseCards] = useState([])
     const [modalOpen, setModalOpen] = useState(false)
+    const [name, setName] = useState('')
     const [description, setDescription] = useState('')
-    const [isEdit, setIsEdit] = useState(false)
+    const [isEditName, setIsEditName] = useState(false)
+    const [isEditDescription, setIsEditDescription] = useState(false)
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -27,6 +29,7 @@ const EditWorkout = () => {
 
             if (response.ok) {
                 setWorkout(workoutJSON)
+                setName(workoutJSON.name)
                 setDescription(workoutJSON.description)
                 const cards = await Promise.all(
                     workoutJSON.exercises.map(async (exercise) => {
@@ -55,11 +58,33 @@ const EditWorkout = () => {
         fetchWorkouts()
     }, [dispatch, exercises])
 
-    const handleEditClick = () => {
-        setIsEdit(true)
+    const handleEditDescriptionClick = () => {
+        setIsEditDescription(true)
+    }
+
+    const handleEditNameClick = () => {
+        setIsEditName(true)
     }
 
     // TODO
+    const handleNameBlur = async () => {
+        if (workout.name !== name.trim()) {
+            const response = await fetch(`${URL}/api/workout/${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ name: name.trim() }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json = await response.json()
+            if (response.ok) {
+                setWorkout(json)
+                setName(json.name)
+            }
+        }
+        setIsEditName(false)
+    }
+
     const handleDescriptionBlur = async () => {
         if (workout.description !== description.trim()) {
             const response = await fetch(`${URL}/api/workout/${id}`, {
@@ -75,7 +100,7 @@ const EditWorkout = () => {
                 setDescription(json.description)
             }
         }
-        setIsEdit(false)
+        setIsEditDescription(false)
     }
 
     const handleBackClick = () => {
@@ -94,14 +119,38 @@ const EditWorkout = () => {
         return (
             <div className="edit-header">
                 <div className="edit-title-container">
-                    <h1 className="edit-title">{workout.name}</h1>
+                    {!isEditName ? (
+                        <h1 className="edit-title">
+                            {workout.name}
+                            <Tooltip
+                                title="Edit name"
+                                placement="top"
+                            >
+                                <IconButton onClick={handleEditNameClick}>
+                                    <Edit />
+                                </IconButton>
+                            </Tooltip>
+                        </h1>
+                    ) : (
+                        <input
+                            className="edit-title"
+                            value={name}
+                            onChange={(e) => {
+                                setName(e.target.value)
+                            }}
+                            onBlur={handleNameBlur}
+                            autoFocus
+                        />
+                    )}
                 </div>
-                {!isEdit ? (
+                {!isEditDescription ? (
                     <p className="edit-description">
                         {workout.description}
-                        <IconButton onClick={handleEditClick}>
-                            <Edit fontSize="small" />
-                        </IconButton>
+                        <Tooltip title="Edit description" placement="top">
+                            <IconButton onClick={handleEditDescriptionClick}>
+                                <Edit fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
                     </p>
                 ) : (
                     <input
