@@ -18,6 +18,16 @@ export const exercisesReducer = (state, action) => {
                     (e) => e._id !== action.payload._id
                 )
             }
+        case 'UPDATE_EXERCISE':
+            return {
+                exercises: state.exercises.map((exercise) => {
+                    if (exercise._id === action.payload._id) {
+                        return action.payload
+                    } else {
+                        return exercise
+                    }
+                })
+            }
         default:
             return state
     }
@@ -25,7 +35,7 @@ export const exercisesReducer = (state, action) => {
 
 export const ExercisesContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(exercisesReducer, {
-        exercises: null
+        exercises: []
     })
 
     return (

@@ -79,7 +79,7 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
         >
             <div className="new-exercise-modal">
                 <div className="new-exercise-header">
-                    {exercise && <h4>{exercise.name}</h4>}
+                    {exercise && <h4>Add {exercise.name}</h4>}
                     <Close className="new-exercise-close" onClick={onClose} />
                 </div>
 

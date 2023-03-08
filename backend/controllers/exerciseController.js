@@ -78,6 +78,25 @@ const deleteExercise = async (req, res) => {
 // PATCH an exericse
 const updateExercise = async (req, res) => {
     const { id } = req.params
+    const { name, description, muscleGroups } = req.body
+
+    let emptyFields = []
+
+    if (!name) {
+        emptyFields.push('name')
+    }
+    if (!description) {
+        emptyFields.push('description')
+    }
+    if (muscleGroups.length == 0) {
+        emptyFields.push('muscleGroups')
+    }
+
+    if (emptyFields.length > 0) {
+        return res
+            .status(400)
+            .json({ error: 'Please fill in required fields', emptyFields })
+    }
 
     // Check for valid id
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -86,7 +105,8 @@ const updateExercise = async (req, res) => {
 
     const exercise = await Exercise.findByIdAndUpdate(
         { _id: id },
-        { ...req.body }
+        { ...req.body },
+        { returnOriginal: false }
     )
 
     if (!exercise) {

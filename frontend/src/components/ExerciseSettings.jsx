@@ -5,12 +5,14 @@ import { IconButton, Menu, MenuItem } from '@mui/material'
 import { MoreVert, Edit, Delete, Add, Remove } from '@mui/icons-material'
 import { URL } from '../App'
 import AddExerciseModal from './AddExerciseModal'
+import EditExerciseModal from './EditExerciseModal'
 
 const ExerciseSettings = ({ workout, exerciseid }) => {
     const { dispatch } = useExercisesContext()
     const { dispatch: workoutsDispatch } = useWorkoutsContext()
     const [anchorEl, setAnchorEl] = useState(null)
-    const [modalOpen, setModalOpen] = useState(false)
+    const [addModalOpen, setAddModalOpen] = useState(false)
+    const [editModalOpen, setEditModalOpen] = useState(false)
 
     const handleMenuClick = (e) => {
         setAnchorEl(e.currentTarget)
@@ -20,12 +22,11 @@ const ExerciseSettings = ({ workout, exerciseid }) => {
         setAnchorEl(null)
     }
     const handleEditClick = () => {
-        // TODO
-        console.log('edit clicked')
+        setEditModalOpen(true)
         handleMenuClose()
     }
     const handleAddClick = () => {
-        setModalOpen(true)
+        setAddModalOpen(true)
         handleMenuClose()
     }
     const handleRemoveClick = async () => {
@@ -53,8 +54,12 @@ const ExerciseSettings = ({ workout, exerciseid }) => {
         handleMenuClose()
     }
 
-    const handleClose = () => {
-        setModalOpen(false)
+    const handleAddClose = () => {
+        setAddModalOpen(false)
+    }
+    
+    const handleEditClose = () => {
+        setEditModalOpen(false)
     }
 
     return (
@@ -85,7 +90,8 @@ const ExerciseSettings = ({ workout, exerciseid }) => {
                     Delete
                 </MenuItem>
             </Menu>
-            <AddExerciseModal open={modalOpen} onClose={handleClose} workout={workout} exerciseid={exerciseid} />
+            <AddExerciseModal open={addModalOpen} onClose={handleAddClose} workout={workout} exerciseid={exerciseid} />
+            <EditExerciseModal open={editModalOpen} onClose={handleEditClose} exerciseid={exerciseid}/>
         </div>
     )
 }

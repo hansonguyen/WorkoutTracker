@@ -12,7 +12,7 @@ import { useExercisesContext } from '../hooks/useExercisesContext'
 const EditWorkout = () => {
     const { id } = useParams()
     const { dispatch } = useWorkoutsContext()
-    const { exercises } = useExercisesContext()
+    const { exercises, dispatch: exerciseDispatch } = useExercisesContext()
     const navigate = useNavigate()
     const [workout, setWorkout] = useState(null)
     const [exerciseCards, setExerciseCards] = useState([])
@@ -56,7 +56,7 @@ const EditWorkout = () => {
             }
         }
         fetchWorkouts()
-    }, [dispatch, exercises])
+    }, [exercises, dispatch, exerciseDispatch])
 
     const handleEditDescriptionClick = () => {
         setIsEditDescription(true)
@@ -122,10 +122,7 @@ const EditWorkout = () => {
                     {!isEditName ? (
                         <h1 className="edit-title">
                             {workout.name}
-                            <Tooltip
-                                title="Edit name"
-                                placement="top"
-                            >
+                            <Tooltip title="Edit name" placement="top">
                                 <IconButton onClick={handleEditNameClick}>
                                     <Edit />
                                 </IconButton>
