@@ -43,6 +43,7 @@ const ExerciseList = ({ workout }) => {
                         key={exercise._id}
                         workout={workout}
                         exercise={exercise}
+                        inWorkout={false}
                     />
                 ))}
         </section>

@@ -47,6 +47,7 @@ const EditWorkout = () => {
                                     reps={exercise.reps}
                                     load={exercise.load}
                                     key={exercise.exercise_id}
+                                    inWorkout={true}
                                 />
                             )
                         }

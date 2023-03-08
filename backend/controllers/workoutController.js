@@ -105,9 +105,33 @@ const removeExercise = async (req, res) => {
 // PATCH a workout
 const updateWorkout = async (req, res) => {
     const { id } = req.params
+    const { exercises } = req.body
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'Exercise does not exist...' })
+    }
+
+    const emptyFields = []
+
+    if (exercises) {
+        exercises.forEach(({ sets, reps, load }) => {
+            if (!Number.isInteger(sets) || sets <= 0) {
+                emptyFields.push('sets')
+            }
+            if (!Number.isInteger(reps) || reps <= 0) {
+                emptyFields.push('reps')
+            }
+            if (!Number.isInteger(load) || load < 0) {
+                emptyFields.push('load')
+            }
+        })
+    }
+
+    if (emptyFields.length > 0) {
+        return res.status(400).json({
+            error: 'Please fill out all fields properly',
+            emptyFields
+        })
     }
 
     const workout = await Workout.findOneAndUpdate(
@@ -122,7 +146,7 @@ const updateWorkout = async (req, res) => {
     res.status(200).json(workout)
 }
 
-// PATCH exercise to workout
+// POST exercise to workout
 const addExercise = async (req, res) => {
     const { workoutid } = req.params
     const { exercise_id, sets, reps, load } = req.body
@@ -149,7 +173,9 @@ const addExercise = async (req, res) => {
         emptyFields.push('load')
     }
     if (emptyFields.length > 0) {
-        return res.status(400).json({error: 'Please fill out all fields properly', emptyFields})
+        return res
+            .status(400)
+            .json({ error: 'Please fill out all fields properly', emptyFields })
     }
 
     try {

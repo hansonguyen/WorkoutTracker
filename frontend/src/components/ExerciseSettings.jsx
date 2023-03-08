@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useExercisesContext } from '../hooks/useExercisesContext'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
-import { IconButton, Menu, MenuItem } from '@mui/material'
+import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
 import { MoreVert, Edit, Delete, Add, Remove } from '@mui/icons-material'
 import { URL } from '../App'
 import AddExerciseModal from './AddExerciseModal'
 import EditExerciseModal from './EditExerciseModal'
 
-const ExerciseSettings = ({ workout, exerciseid }) => {
+const ExerciseSettings = ({ workout, exerciseid, inWorkout }) => {
     const { dispatch } = useExercisesContext()
     const { dispatch: workoutsDispatch } = useWorkoutsContext()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -30,9 +30,12 @@ const ExerciseSettings = ({ workout, exerciseid }) => {
         handleMenuClose()
     }
     const handleRemoveClick = async () => {
-        const response = await fetch(`${URL}/api/workout/${workout._id}/${exerciseid}`, {
-            method: 'DELETE'
-        })
+        const response = await fetch(
+            `${URL}/api/workout/${workout._id}/${exerciseid}`,
+            {
+                method: 'DELETE'
+            }
+        )
         const json = await response.json()
 
         if (response.ok) {
@@ -57,7 +60,7 @@ const ExerciseSettings = ({ workout, exerciseid }) => {
     const handleAddClose = () => {
         setAddModalOpen(false)
     }
-    
+
     const handleEditClose = () => {
         setEditModalOpen(false)
     }
@@ -73,25 +76,55 @@ const ExerciseSettings = ({ workout, exerciseid }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={handleEditClick}>
-                    <Edit fontSize="small" />
-                    Edit
-                </MenuItem>
-                <MenuItem onClick={handleAddClick}>
-                    <Add fontSize="small" />
-                    Add
-                </MenuItem>
-                <MenuItem onClick={handleRemoveClick}>
-                    <Remove fontSize="small" />
-                    Remove
-                </MenuItem>
-                <MenuItem onClick={handleDeleteClick}>
-                    <Delete fontSize="small" />
-                    Delete
-                </MenuItem>
+                <Tooltip title="Edit exercise" placement="top">
+                    <MenuItem onClick={handleEditClick}>
+                        <Edit fontSize="small" />
+                        Edit
+                    </MenuItem>
+                </Tooltip>
+                {!inWorkout ? (
+                    <Tooltip
+                        title={`Add exercise to ${workout.name}`}
+                        placement="left"
+                    >
+                        <MenuItem onClick={handleAddClick}>
+                            <Add fontSize="small" />
+                            Add
+                        </MenuItem>
+                    </Tooltip>
+                ) : (
+                    <Tooltip
+                        title={`Remove exercise from ${workout.name}`}
+                        placement="bottom"
+                    >
+                        <MenuItem onClick={handleRemoveClick}>
+                            <Remove fontSize="small" />
+                            Remove
+                        </MenuItem>
+                    </Tooltip>
+                )}
+                {!inWorkout && (
+                    <Tooltip title="Permanently delete exercise">
+                        <MenuItem onClick={handleDeleteClick}>
+                            <Delete fontSize="small" />
+                            Delete
+                        </MenuItem>
+                    </Tooltip>
+                )}
             </Menu>
-            <AddExerciseModal open={addModalOpen} onClose={handleAddClose} workout={workout} exerciseid={exerciseid} />
-            <EditExerciseModal open={editModalOpen} onClose={handleEditClose} exerciseid={exerciseid}/>
+            <AddExerciseModal
+                open={addModalOpen}
+                onClose={handleAddClose}
+                workout={workout}
+                exerciseid={exerciseid}
+            />
+            <EditExerciseModal
+                open={editModalOpen}
+                onClose={handleEditClose}
+                workout={workout}
+                exerciseid={exerciseid}
+                inWorkout={inWorkout}
+            />
         </div>
     )
 }
