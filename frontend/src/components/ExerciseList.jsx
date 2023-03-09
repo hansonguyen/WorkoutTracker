@@ -36,8 +36,10 @@ const ExerciseList = ({ workout }) => {
 
     return (
         <section className="exercise-list-display">
-            <h1 className="exercise-list-title">My Exercises</h1>
-            {unusedExercises &&
+            {unusedExercises.length > 0 && (
+                <h1 className="exercise-list-title">My Exercises</h1>
+            )}
+            {unusedExercises.length > 0 ? (
                 unusedExercises.map((exercise) => (
                     <ExerciseCard
                         key={exercise._id}
@@ -45,7 +47,13 @@ const ExerciseList = ({ workout }) => {
                         exercise={exercise}
                         inWorkout={false}
                     />
-                ))}
+                ))
+            ) : (
+                <div className="no-exercises-display">
+                    <h3 className="no-exercises-title">No exercises!</h3>
+                    <p className="no-exercises-description">Add one below</p>
+                </div>
+            )}
         </section>
     )
 }

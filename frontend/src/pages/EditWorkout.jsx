@@ -169,7 +169,15 @@ const EditWorkout = () => {
         <div className="edit-page">
             {workout ? <Header /> : <CircularProgress />}
             <div className="grid-container">
-                <section className="exercises-display">{exerciseCards}</section>
+                {exerciseCards ? (
+                    <section className="exercises-display">
+                        {exerciseCards}
+                    </section>
+                ) : (
+                    <section className="exercises-display">
+                        <h3>No Workouts!</h3>
+                    </section>
+                )}
                 <ExerciseList workout={workout} />
                 <button className="edit-back-button" onClick={handleBackClick}>
                     Back to Workouts
