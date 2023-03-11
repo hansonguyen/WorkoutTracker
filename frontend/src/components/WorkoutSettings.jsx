@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import { MoreVert, Edit, Delete } from '@mui/icons-material'
 import { URL } from '../App'
 
 const WorkoutSettings = ({ workoutid }) => {
     const { dispatch } = useWorkoutsContext()
+    const { user } = useAuthContext()
     const navigate = useNavigate()
     const [anchorEl, setAnchorEl] = useState(null)
     const handleMenuClick = (e) => {
@@ -21,8 +23,14 @@ const WorkoutSettings = ({ workoutid }) => {
         handleMenuClose()
     }
     const handleDeleteClick = async () => {
+        if (!user) {
+            return
+        }
         const response = await fetch(`${URL}/api/workout/${workoutid}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json()
 

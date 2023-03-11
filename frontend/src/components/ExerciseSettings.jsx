@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useExercisesContext } from '../hooks/useExercisesContext'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
 import { MoreVert, Edit, Delete, Add, Remove } from '@mui/icons-material'
 import { URL } from '../App'
@@ -10,6 +11,7 @@ import EditExerciseModal from './EditExerciseModal'
 const ExerciseSettings = ({ workout, exerciseid, inWorkout }) => {
     const { dispatch } = useExercisesContext()
     const { dispatch: workoutsDispatch } = useWorkoutsContext()
+    const { user } = useAuthContext()
     const [anchorEl, setAnchorEl] = useState(null)
     const [addModalOpen, setAddModalOpen] = useState(false)
     const [editModalOpen, setEditModalOpen] = useState(false)
@@ -30,10 +32,16 @@ const ExerciseSettings = ({ workout, exerciseid, inWorkout }) => {
         handleMenuClose()
     }
     const handleRemoveClick = async () => {
+        if (!user) {
+            return
+        }
         const response = await fetch(
             `${URL}/api/workout/${workout._id}/${exerciseid}`,
             {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
             }
         )
         const json = await response.json()
@@ -45,8 +53,14 @@ const ExerciseSettings = ({ workout, exerciseid, inWorkout }) => {
         handleMenuClose()
     }
     const handleDeleteClick = async () => {
+        if (!user) {
+            return
+        }
         const response = await fetch(`${URL}/api/exercise/${exerciseid}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json()
 

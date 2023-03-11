@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 import { Modal, Tooltip } from '@mui/material'
 import { Close, Info } from '@mui/icons-material'
 import { URL } from '../App'
 
 const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
     const { dispatch } = useWorkoutsContext()
+    const { user } = useAuthContext()
     const [exercise, setExercise] = useState(null)
     const [sets, setSets] = useState(1)
     const [reps, setReps] = useState(1)
@@ -15,14 +17,18 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
 
     useEffect(() => {
         const fetchExercise = async () => {
-            const response = await fetch(`${URL}/api/exercise/${exerciseid}`)
+            const response = await fetch(`${URL}/api/exercise/${exerciseid}`, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             const json = await response.json()
             if (response.ok) {
                 setExercise(json)
             }
         }
         fetchExercise()
-    }, [])
+    }, [user])
 
     const handleSetsChange = (event) => {
         setSets(event.target.value)
@@ -38,6 +44,10 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        if (!user) {
+            setError('You must be logged in')
+            return
+        }
         // Handle form submission
         const addedExercise = {
             exercise_id: exerciseid,
@@ -49,7 +59,8 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
             method: 'POST',
             body: JSON.stringify(addedExercise),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()

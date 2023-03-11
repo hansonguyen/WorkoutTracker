@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useExercisesContext } from '../hooks/useExercisesContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 import { Modal, Checkbox, FormControlLabel } from '@mui/material'
 import { Close, AddCircleOutline, AddCircle } from '@mui/icons-material'
 import { URL } from '../App'
@@ -18,6 +19,7 @@ const muscleGroups = [
 
 const NewExerciseModal = ({ open, onClose }) => {
     const { dispatch } = useExercisesContext()
+    const { user } = useAuthContext()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [checkedGroups, setCheckedGroups] = useState([])
@@ -44,13 +46,18 @@ const NewExerciseModal = ({ open, onClose }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        if (!user) {
+            setError('You must be logged in')
+            return
+        }
         // Handle form submission
         const exercise = { name, description, muscleGroups: checkedGroups }
         const response = await fetch(`${URL}/api/exercise`, {
             method: 'POST',
             body: JSON.stringify(exercise),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()

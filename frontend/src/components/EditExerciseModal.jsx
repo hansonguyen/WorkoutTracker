@@ -4,6 +4,7 @@ import { Modal, Checkbox, FormControlLabel, Tooltip } from '@mui/material'
 import { Close, AddCircleOutline, AddCircle, Info } from '@mui/icons-material'
 import { URL } from '../App'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const muscleGroups = [
     'Chest',
@@ -26,6 +27,7 @@ const EditExerciseModal = ({
 }) => {
     const { exercises, dispatch } = useExercisesContext()
     const { dispatch: workoutsDispatch } = useWorkoutsContext()
+    const { user } = useAuthContext()
     const [exercise, setExercise] = useState(null)
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
@@ -38,7 +40,11 @@ const EditExerciseModal = ({
 
     useEffect(() => {
         const fetchExercise = async () => {
-            const response = await fetch(`${URL}/api/exercise/${exerciseid}`)
+            const response = await fetch(`${URL}/api/exercise/${exerciseid}`, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             const json = await response.json()
             if (response.ok) {
                 setExercise(json)
@@ -57,7 +63,7 @@ const EditExerciseModal = ({
             }
         }
         fetchExercise()
-    }, [])
+    }, [user])
 
     const handleNameChange = (event) => {
         setName(event.target.value)
@@ -91,13 +97,18 @@ const EditExerciseModal = ({
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        if (!user) {
+            setError('You must be logged in')
+            return
+        }
         // Handle form submission
         const exercise = { name, description, muscleGroups: checkedGroups }
         const response = await fetch(`${URL}/api/exercise/${exerciseid}`, {
             method: 'PATCH',
             body: JSON.stringify(exercise),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
@@ -123,7 +134,8 @@ const EditExerciseModal = ({
                 method: 'PATCH',
                 body: JSON.stringify(newWorkout),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
                 }
             })
             const json2 = await response2.json()

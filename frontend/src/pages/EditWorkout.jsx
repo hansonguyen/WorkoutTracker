@@ -8,11 +8,13 @@ import { URL } from '../App'
 import { Edit } from '@mui/icons-material'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
 import { useExercisesContext } from '../hooks/useExercisesContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const EditWorkout = () => {
     const { id } = useParams()
     const { dispatch } = useWorkoutsContext()
     const { exercises, dispatch: exerciseDispatch } = useExercisesContext()
+    const { user } = useAuthContext()
     const navigate = useNavigate()
     const [workout, setWorkout] = useState(null)
     const [exerciseCards, setExerciseCards] = useState([])
@@ -24,7 +26,11 @@ const EditWorkout = () => {
 
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch(`${URL}/api/workout/${id}`)
+            const response = await fetch(`${URL}/api/workout/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             const workoutJSON = await response.json()
 
             if (response.ok) {
@@ -34,7 +40,12 @@ const EditWorkout = () => {
                 const cards = await Promise.all(
                     workoutJSON.exercises.map(async (exercise) => {
                         const response = await fetch(
-                            `${URL}/api/exercise/${exercise.exercise_id}`
+                            `${URL}/api/exercise/${exercise.exercise_id}`,
+                            {
+                                headers: {
+                                    'Authorization': `Bearer ${user.token}`
+                                }
+                            }
                         )
                         const json = await response.json()
 
@@ -56,8 +67,10 @@ const EditWorkout = () => {
                 setExerciseCards(cards)
             }
         }
-        fetchWorkouts()
-    }, [exercises, dispatch, exerciseDispatch])
+        if (user) {
+            fetchWorkouts()
+        }
+    }, [exercises, dispatch, exerciseDispatch, user])
 
     const handleEditDescriptionClick = () => {
         setIsEditDescription(true)
@@ -69,12 +82,16 @@ const EditWorkout = () => {
 
     // TODO
     const handleNameBlur = async () => {
+        if (!user) {
+            return
+        }
         if (workout.name !== name.trim()) {
             const response = await fetch(`${URL}/api/workout/${id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({ name: name.trim() }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
                 }
             })
             const json = await response.json()
@@ -87,12 +104,16 @@ const EditWorkout = () => {
     }
 
     const handleDescriptionBlur = async () => {
+        if (!user) {
+            return
+        }
         if (workout.description !== description.trim()) {
             const response = await fetch(`${URL}/api/workout/${id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({ description: description.trim() }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
                 }
             })
             const json = await response.json()

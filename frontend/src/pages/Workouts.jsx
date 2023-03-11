@@ -13,15 +13,21 @@ const Workouts = () => {
 
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch(`${URL}/api/workout`)
+            const response = await fetch(`${URL}/api/workout`, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             const json = await response.json()
 
             if (response.ok) {
                 dispatch({ type: 'SET_WORKOUTS', payload: json })
             }
         }
-        fetchWorkouts()
-    }, [])
+        if (user) {
+            fetchWorkouts()
+        }
+    }, [user])
 
     const handleLogout = () => {
         logout()

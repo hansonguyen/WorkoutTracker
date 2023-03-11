@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { URL } from '../App'
+import { useAuthContext } from '../hooks/useAuthContext'
 import { useExercisesContext } from '../hooks/useExercisesContext'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
 import ExerciseCard from './ExerciseCard'
@@ -7,11 +8,16 @@ import ExerciseCard from './ExerciseCard'
 const ExerciseList = ({ workout }) => {
     const { exercises, dispatch } = useExercisesContext()
     const { workouts } = useWorkoutsContext()
+    const { user } = useAuthContext()
     const [unusedExercises, setUnusedExercises] = useState([])
 
     useEffect(() => {
         const fetchExercises = async () => {
-            const response = await fetch(`${URL}/api/exercise`)
+            const response = await fetch(`${URL}/api/exercise`, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             const json = await response.json()
 
             if (response.ok) {
@@ -20,7 +26,7 @@ const ExerciseList = ({ workout }) => {
         }
 
         fetchExercises()
-    }, [dispatch, workouts])
+    }, [dispatch, workouts, user])
 
     useEffect(() => {
         if (workout) {
