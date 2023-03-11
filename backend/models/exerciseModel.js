@@ -18,12 +18,12 @@ const exerciseSchema = new Schema(
             validate: {
                 validator: (arr) => arr.length > 0
             }
+        },
+        user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
         }
-        // user_id: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: 'User',
-        //     required: true
-        // }
     },
     { timestamps: true }
 )
