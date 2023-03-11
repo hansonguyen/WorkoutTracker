@@ -1,11 +1,15 @@
 import { useEffect } from 'react'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useLogout } from '../hooks/useLogout'
+import { useAuthContext } from '../hooks/useAuthContext'
 import WorkoutCard from '../components/WorkoutCard'
 import NewWorkoutForm from '../components/NewWorkoutForm'
 import { URL } from '../App'
 
 const Workouts = () => {
     const { workouts, dispatch } = useWorkoutsContext()
+    const { logout } = useLogout()
+    const { user } = useAuthContext()
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -19,9 +23,19 @@ const Workouts = () => {
         fetchWorkouts()
     }, [])
 
+    const handleLogout = () => {
+        logout()
+    }
+
     return (
         <div className="workouts-page">
             <h1 className="workouts-title">Workouts</h1>
+            {user && (
+                <div>
+                    <p>{user.name}</p>
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
+            )}
             <div className="grid-container">
                 <section className="workouts-display">
                     {workouts.length > 0 ? (
