@@ -55,6 +55,7 @@ const NewWorkoutForm = () => {
                     setName(e.target.value)
                 }}
                 value={name}
+                maxLength='14'
             />
             <label className="workout-form-label">Description:</label>
             <input
@@ -66,6 +67,7 @@ const NewWorkoutForm = () => {
                     setDescription(e.target.value)
                 }}
                 value={description}
+                maxLength="100"
             />
             <button className="workout-form-submit" type="submit">
                 Add

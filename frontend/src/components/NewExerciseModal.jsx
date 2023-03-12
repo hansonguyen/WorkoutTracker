@@ -99,6 +99,7 @@ const NewExerciseModal = ({ open, onClose }) => {
                         label="Name"
                         value={name}
                         onChange={handleNameChange}
+                        maxLength='16'
                     />
                     <label className="new-exercise-label">Description</label>
                     <input
@@ -110,6 +111,7 @@ const NewExerciseModal = ({ open, onClose }) => {
                         label="Description"
                         value={description}
                         onChange={handleDescriptionChange}
+                        maxLength='80'
                     />
                     <div className="new-exercise-muscles">
                         {muscleGroups.map((group) => (

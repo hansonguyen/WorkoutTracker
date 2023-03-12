@@ -191,6 +191,7 @@ const EditExerciseModal = ({
                         label="Name"
                         value={name}
                         onChange={handleNameChange}
+                        maxLength='16'
                     />
                     <label className="new-exercise-label">Description</label>
                     <input
@@ -202,6 +203,7 @@ const EditExerciseModal = ({
                         label="Description"
                         value={description}
                         onChange={handleDescriptionChange}
+                        maxLength='80'
                     />
                     {inWorkout && (
                         <div>
@@ -227,6 +229,7 @@ const EditExerciseModal = ({
                                 value={sets}
                                 type="number"
                                 onChange={handleSetsChange}
+                                max="9999"
                             />
                             <label className="add-exercise-label">
                                 Reps
@@ -250,6 +253,7 @@ const EditExerciseModal = ({
                                 value={reps}
                                 type="number"
                                 onChange={handleRepsChange}
+                                max="9999"
                             />
                             <label className="add-exercise-label">
                                 Load
@@ -273,6 +277,7 @@ const EditExerciseModal = ({
                                 value={load}
                                 type="number"
                                 onChange={handleLoadChange}
+                                max="9999"
                             />
                         </div>
                     )}

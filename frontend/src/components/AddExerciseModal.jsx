@@ -112,6 +112,7 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
                         value={sets}
                         type="number"
                         onChange={handleSetsChange}
+                        max="9999"
                     />
                     <label className="add-exercise-label">
                         Reps
@@ -130,6 +131,7 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
                         value={reps}
                         type="number"
                         onChange={handleRepsChange}
+                        max="9999"
                     />
                     <label className="add-exercise-label">
                         Load
@@ -148,6 +150,7 @@ const AddExerciseModal = ({ open, onClose, workout, exerciseid }) => {
                         value={load}
                         type="number"
                         onChange={handleLoadChange}
+                        max="9999"
                     />
                     <button className="new-exercise-submit" type="submit">
                         Add

@@ -158,6 +158,7 @@ const EditWorkout = () => {
                                 setName(e.target.value)
                             }}
                             onBlur={handleNameBlur}
+                            maxLength='14'
                             autoFocus
                         />
                     )}
@@ -179,6 +180,7 @@ const EditWorkout = () => {
                             setDescription(e.target.value)
                         }}
                         onBlur={handleDescriptionBlur}
+                        maxLength='100'
                         autoFocus
                     />
                 )}
