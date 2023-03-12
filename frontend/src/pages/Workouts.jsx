@@ -35,11 +35,12 @@ const Workouts = () => {
 
     return (
         <div className="workouts-page">
-            <h1 className="workouts-title">Workouts</h1>
             {user && (
-                <div>
-                    <p>{user.name}</p>
-                    <button onClick={handleLogout}>Logout</button>
+                <div className="workouts-page-header">
+                    <h1 className="workouts-title">{user.name}'s Workouts</h1>
+                    <button className="logout-button" onClick={handleLogout}>
+                        Logout
+                    </button>
                 </div>
             )}
             <div className="grid-container">

@@ -7,10 +7,14 @@ export const useSignup = () => {
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useAuthContext()
 
-    const signup = async (name, email, password) => {
+    const signup = async (name, email, password, confirm) => {
         setIsLoading(true)
         setError(null)
-
+        if (password !== confirm) {
+            setIsLoading(false)
+            setError("Passwords don't match")
+            return
+        }
         const response = await fetch(`${URL}/api/user/signup`, {
             method: 'POST',
             headers: {
